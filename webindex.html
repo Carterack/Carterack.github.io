@@ -1,0 +1,57 @@
+<! DOCTYPE html>
+<html>
+<head>
+	<title> Celsius to Fahrenheit </title>
+</head>
+<body>
+<p><b> Celsius to Fahrenheit Converter </b> </p>
+	<input id="numb1">
+	<button type="button" onclick= "tempConverter()">Convert</button>
+	<br></br>
+	<p1> Result : </p1>
+	<p1 id="demo"> </p1>
+	<br></br>
+	<p2> Numbers Converted : </p2>
+	<p2 id="demo2"> </p2>
+<script>
+	function showHint(str) {
+          var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+                document.getElementById("demo").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "?q=" + str, true);
+        xmlhttp.send();
+		}
+	function readDatabase(){
+		  var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+                document.getElementById("demo2").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "/getData", true);
+        xmlhttp.send();
+	}
+	
+		function tempConverter(){
+			var x;
+			
+			x=document.getElementById("numb1").value;
+			if (x.length == 0) { 
+				document.getElementById("demo").innerHTML = "Nothing Inputted";
+				return;}
+			
+				var hTemp = ((x * 9)/5) +32;
+				showHint(hTemp);
+				readDatabase();
+		}
+		
+	</script>	
+</body>
+</html>
