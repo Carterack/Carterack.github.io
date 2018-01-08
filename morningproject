@@ -23,9 +23,6 @@ function concat() {
 	x=parseInt(document.getElementById("one").value);
 	y=parseInt(document.getElementById("two").value);
 	z=parseInt(document.getElementById("three").value);
-	console.log(x);
-	console.log(y);
-	console.log(z);
 	if(((x+y)>z) &&((x+z) >y) && ((z+y)>x)){
 			doIt ="valid";
 	}
