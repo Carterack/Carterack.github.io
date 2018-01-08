@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html id ="body">
+<head>
+	<title> Celsius to Fahrenheit </title>	
+</head>
+<body>
+<p><b> Celsius to Fahrenheit Converter </b> </p>
+	<input id="numb1">
+	<button type="button" onclick= "tempConverter()">Convert</button>
+	<br></br>
+	<p1> Result : </p1>
+	<p1 id="demo"> </p1>
+	<br></br>
+	<p2> Numbers Converted : </p2>
+	<p3 id="demo2"> </p3>
+	<br></br>
+	<button type="button" onclick= "clearDatabase()"> Clear Database </button>
+	<p id="demo3"></p>
+	 <script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+	//gets data from database and writes it to demo
+	function showHint(str, x) {
+		var xmlhttp = new XMLHttpRequest();  
+        xmlhttp.onreadystatechange = function() {
+		
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("demo").innerHTML = this.responseText;
+			}
+        };
+        xmlhttp.open("GET", "?q=" + str + "&i=" + x.toString() , true);
+        xmlhttp.send();
+	}
+	//gets data from database and writes it in id=demo2
+	function readDatabase(){
+		var xmlhttp = new XMLHttpRequest();  
+        xmlhttp.onreadystatechange = function() {
+		
+			if (this.readyState == 4 && this.status == 200) {
+				var storeNumbers = this.responseText;
+                document.getElementById("demo2").innerHTML = this.responseText;
+				//console.log(storeNumbers);
+            }
+		};
+        xmlhttp.open("GET", "/index.html/getData", true);
+        xmlhttp.send();
+	}
+	
+	function tempConverter(){
+		var x;
+		x=document.getElementById("numb1").value;
+		
+		if (x.length == 0) { 
+			document.getElementById("demo").innerHTML = "Nothing Inputted";
+			return;
+		}		
+		var hTemp = ((x * 9)/5) +32;
+		showHint(hTemp, x);
+		readDatabase();
+		socket.emit('data inputted', "hello");
+	}
+		
+	function clearDatabase() {
+		var xmlhttp = new XMLHttpRequest();  
+        xmlhttp.onreadystatechange = function() {
+		
+			if (this.readyState == 4 && this.status == 200)	{	
+				document.getElementById("demo2").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "/index.html/delete", true);
+        xmlhttp.send();
+	}
+</script>	
+</body>
+</html>
