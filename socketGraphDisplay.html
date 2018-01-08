@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html id="body">
+<head>
+<style>
+table,th, td{
+	width: 25%;
+	border: 1px solid black;
+	text-align: center;
+	}
+	
+	tr:nth-child(even){background-color: #f2f2f2}
+	th:nth-child(0) {background-color: #4CAF50}	
+</style>
+<head>
+<body>
+	<script src="/socket.io/socket.io.js"></script>
+	<br></br>
+	<table id= "tempTable" align="center">
+		<th>FAHRENHEIT</th>
+		<th>CELSIUS</th>
+		<caption><b>Temperatures Inputted</b></caption>		
+	</table> 
+</body>
+<script>
+var socket = io();
+var counter = 0;
+	function readDatabase2(){
+		var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+		
+			if (this.readyState == 4 && this.status == 200) {
+				var data = this.responseText;
+				var splitData = data.split(",");
+				//console.log(splitData.length);
+				deleteTable();
+				createTable(splitData);
+				//console.log(splitData);			
+            }
+        };
+        xmlhttp.open("GET", "/graphdisplay.html/getTable", true);
+        xmlhttp.send();
+	}	
+	function createTable(data) {
+		
+		var table = document.getElementById("tempTable");
+		counter = 0;
+		if(data.length != 0 && data.length != 1) {
+			counter = data.length - 1;
+			for(var i = 0; i < data.length; i++) {
+				
+				var row = table.insertRow(-1);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				cell1.innerHTML = data[i];
+				cell2.innerHTML = data[i+1];
+				i++;
+				
+				//console.log(i);
+				//console.log(counter + " fjdo");
+			}
+		}	
+	}
+	
+	function deleteTable() {
+		for(var i = 0; i < counter; i++) {
+		document.getElementById("tempTable").deleteRow(-1);
+		counter --;
+		}	
+	}
+		
+	<!-- function addAnotherRow(Cels, Fahr) {
+		//var table = document.getElementById("tempTable");
+		//var row= table.insertRow(-1);
+		//var cell1 = row1.insertCell(0);
+		//var cell2 = row1.insertCell(1);
+		//cell1.innerHTML = Cels;
+		//cell2.innerHTML = Fahr;
+	//}	 -->
+	
+	//setInterval(readDatabase2, 500);
+	
+	socket.on('data inputted', function(msg){
+		readDatabase2();
+	});
+</script>
+</html>
